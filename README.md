@@ -1,5 +1,5 @@
 # gfal-sync
-GFAL sync utility
+GFAL sync utility to copy a list of subdirectories that contain files (no recursion) to remote storage.
 
 ```
 usage: gfal-sync.py [-h] [-c CONFFILE] [-r RECOVERFILE]
