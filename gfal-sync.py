@@ -12,7 +12,7 @@ def monitor_callback(src, dst, average, instant, transferred, elapsed):
     print("[%4d] %.2fMB (%.2fKB/s)\r" % (elapsed, transferred / 1048576, average / 1024)), sys.stdout.flush()
 
 # parse arguments
-parser = argparse.ArgumentParser(description="=== gfal2-sync ===")
+parser = argparse.ArgumentParser(description="=== gfal-sync ===")
 parser.add_argument('-c', '--conf', dest='conffile', type=str, action='store', help='JSON config file')
 parser.add_argument('-r', '--recover', dest='recoverfile', type=str, action='store', help='JSON recover file')
 

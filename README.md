@@ -4,7 +4,7 @@ GFAL sync utility
 ```
 usage: gfal-sync.py [-h] [-c CONFFILE] [-r RECOVERFILE]
 
-=== gfal2-sync ===
+=== gfal-sync ===
 
 optional arguments:
   -h, --help            show this help message and exit
