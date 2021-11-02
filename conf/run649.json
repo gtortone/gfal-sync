@@ -1,0 +1,12 @@
+{
+
+    "destEndpoint": "srm://storm-fe-ams.cr.cnaf.infn.it:8444/darksidedisk",
+    "destBaseDir": "/dsproto/protona-setup1/raw",
+    
+    "srcBaseDir": "/storage/dsdata/setup-1",
+    
+    "srcItems": [
+    
+        "run00649"
+    ]
+}
