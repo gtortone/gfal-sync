@@ -183,6 +183,7 @@ try:
                 if srcHash == dstHash:                  # hash is the same => skip file
                     print(f'I: file {srcFile} already exists on remote and hash is ok - skipped')
                     jdoc['files'][lfile]['status'] = 'done'
+                    fdone += 1
                 else:                                   # hash is not the same => overwrite file
                     params.overwrite = True
                     try:
