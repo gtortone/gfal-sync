@@ -44,7 +44,7 @@ In **config mode** (-c option) gfal-sync loop on 'srcItems' list and for each di
     - check if remote file exists
         - if remote file does not exist copy local file to remote
         - if remote file exists compare hash values and if values differ copy local file to remote
-- update recovery file
+- update recovery file with result of file transfer
 
 In **recovery mode** (-r option) gfal-sync open passed recovery file:
 - for each filename
