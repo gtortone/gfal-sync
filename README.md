@@ -34,3 +34,23 @@ This file is generated for each srcItems and updated on each transfer by gfal-sy
 - **files**: list of files entries with 'name' as key and 'status' as value
 (status can be: 'done', 'failed', 'idle')
 
+## Operating mode
+
+In **config mode** (-c option) gfal-sync loop on 'srcItems' list and for each directory:
+- check if local directory exists
+- if recovery file exists apply **recovery mode** else create a new recovery file
+- check if remote directory exists (create it if needed)
+- for each file in local directory:
+    - check if remote file exists
+        - if remote file does not exist copy local file to remote
+        - if remote file exists compare hash values and if values differ copy local file to remote
+- update recovery file
+
+In **recovery mode** (-r option) gfal-sync open passed recovery file:
+- for each filename
+    - skip if status is 'done'
+    - try to copy if status is 'failed' or 'idle'
+
+
+
+
