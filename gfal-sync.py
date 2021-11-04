@@ -124,26 +124,33 @@ try:
                 fld[str(lfile)] = dict({ 'status': 'idle' })
             jdoc['files'] = fld
 
+            fmode = 'w'
             statusFile = f'{ldir}.recover'
-            if os.path.exists(statusFile):
-                res = input(f'=> recover file {statusFile} already exists - do you want to overwrite it? (Y/N) ')
-                if res.lower() != 'y':
-                    print('run gfal-sync with different parameters')
-                    sys.exit(-1)
+            if os.path.exists(statusFile):      # recover file exists
+                while True:
+                    res = input(f'=> recover file {statusFile} found - do you want to use it to recover transfers (Y) or init (N) ')
+                    if res.lower() == 'y':
+                        fmode = 'r+'
+                        break
+                    elif res.lower() == 'n':
+                        fmode = 'w'
+                        break
             try:
-                fhand = open(statusFile, 'w')
+                fhand = open(statusFile, fmode)
             except Exception as e:
-                print(f'E: status file open error - {e}')
+                print(f'E: recovery file open error - {e}')
                 sys.exit(-1)
-            fhand.write(json.dumps(jdoc, indent=4))
-            fhand.close()
 
+            if fmode == 'w':
+                fhand.write(json.dumps(jdoc, indent=4))
+                fhand.flush()
+            elif fmode == 'r':
+                jdoc = json.load(fhand)
+                
         elif mode == 'recover':
             statusFile = args.recoverfile
-
-        # start loop
-        fhand = open(statusFile, 'r+')
-        jdoc = json.load(fhand)
+            fhand = open(statusFile, 'r+')
+            jdoc = json.load(fhand)
 
         flist = sorted(os.listdir(localDir))
         fdone = ffailed = 0
@@ -205,6 +212,8 @@ try:
             fhand.seek(0)
             fhand.write(json.dumps(jdoc, indent=4))
             fhand.flush()
+
+        fhand.close()
 
 except KeyboardInterrupt:
     pass
