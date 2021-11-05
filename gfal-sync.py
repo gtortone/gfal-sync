@@ -117,7 +117,7 @@ try:
             jdoc['srcBaseDir'] = f'{srcBaseDir}'
             jdoc['srcDir'] = f'{ldir}'
             jdoc['destEndpoint'] = f'{destEndpoint}'
-            jdoc['destBaseDir'] = f'{destBaseDir}/{ldir}'
+            jdoc['destBaseDir'] = f'{destBaseDir}'
 
             fld = {}
             for lfile in sorted(os.listdir(localDir)):
