@@ -142,9 +142,11 @@ try:
                 sys.exit(-1)
 
             if fmode == 'w':
+                print(f'I: init recovery file {statusFile}')
                 fhand.write(json.dumps(jdoc, indent=4))
                 fhand.flush()
-            elif fmode == 'r':
+            elif fmode == 'r+':
+                print(f'I: read recovery file {statusFile}')
                 jdoc = json.load(fhand)
                 
         elif mode == 'recover':
