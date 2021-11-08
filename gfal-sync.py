@@ -211,6 +211,7 @@ try:
             print(f'stats: {fdone} / {ffailed} / {len(flist)} [done / failed / total]\n')
 
             # update status file
+            fhand.truncate(0)
             fhand.seek(0)
             fhand.write(json.dumps(jdoc, indent=4))
             fhand.flush()
