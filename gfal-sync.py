@@ -11,10 +11,11 @@ import datetime
 def monitor_callback(src, dst, average, instant, transferred, elapsed):
     print("[%4d] %.2fMB (%.2fKB/s)\r" % (elapsed, transferred / 1048576, average / 1024)), sys.stdout.flush()
 
-# parse arguments
+# parse argument
 parser = argparse.ArgumentParser(description="=== gfal-sync ===")
 parser.add_argument('-c', '--conf', dest='conffile', type=str, action='store', help='JSON config file')
 parser.add_argument('-r', '--recover', dest='recoverfile', type=str, action='store', help='JSON recover file')
+parser.add_argument('-s', '--summary', action='store_true', help='print transfers summary')
 
 args = parser.parse_args()
 
@@ -61,14 +62,46 @@ if destBaseDir is None:
 if mode == 'config':
     srcItems = data.get('srcItems', None)
     if srcItems is None:
-        print(f'E: specify srcItems in JSON file')
-        sys.exit(-1)
+        # build srcItems list
+        srcItems = []
+        prefix = data.get('srcItemPrefix', None)
+        fmt = data.get('srcItemIdFormat', None)
+        start = data.get('srcItemIdFrom', None)
+        end = data.get('srcItemIdTo', None)
+
+        for i in range(start, end+1):
+            srcItems.append(prefix + fmt.format(i))
 elif mode == 'recover':
     srcDir = data.get('srcDir', None)
     if srcDir is None:
         print(f'E: specify srcDir in JSON file')
         sys.exit(-1)
     srcItems = [srcDir]
+
+# summary
+if args.summary:
+    if mode != 'config':
+        print(f'E: summary option must be used with JSON config file (-c option)')
+        sys.exit(-1)
+    for ldir in srcItems:
+        try:
+            fhand = open(f'{ldir}.recover', 'r+')
+        except Exception as e:
+            print(f'{ldir}: error opening recover file: {e}')
+        else:
+            jdoc = json.load(fhand)
+            fidle = ffailed = fdone = ftotal = 0
+            files = jdoc['files']
+            for k,v in files.items():
+                ftotal += 1
+                if v['status'] == 'done':
+                    fdone += 1
+                elif v['status'] == 'idle':
+                    fidle += 1
+                elif v['status'] == 'failed':
+                    ffailed += 1
+            print(f'{ldir}: I{fidle} / D{fdone} / F{ffailed} / T{ftotal} [idle / done / failed / total]')
+    sys.exit(0)
 
 # init gfal2
 try:
