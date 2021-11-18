@@ -2,7 +2,7 @@
 GFAL sync utility to copy a list of subdirectories that contain files (no recursion) to remote storage.
 
 ```
-usage: gfal-sync.py [-h] [-c CONFFILE] [-r RECOVERFILE]
+usage: gfal-sync.py [-h] [-c CONFFILE] [-r RECOVERFILE] [-s]
 
 === gfal-sync ===
 
@@ -12,6 +12,7 @@ optional arguments:
                         JSON config file
   -r RECOVERFILE, --recover RECOVERFILE
                         JSON recover file
+  -s, --summary         print transfers summary
 ```
 
 ## Config file (JSON)
