@@ -20,8 +20,20 @@ This file must be created by user. An example is in conf/ directory.
 
 - **destEndpoint**: SRM (or other) base endpoint
 - **destBaseDir**: base directory where script will create subdirectories
-- **srcBaseDir**: source base directory where script will loop on srcItems
-- **srcItems**: list of subdirectories
+- **srcBaseDir**: source base directory where script will loop on direct or range list
+
+gfal-sync can work on _direct_ or _range_ list of subdirectories.
+
+### Direct list
+
+- **srcItems**: direct list of subdirectories
+
+### Range list
+
+- **srcItemPrefix**: directory prefix
+- **srcItemIdFormat**: format string for srcItemIdFrom and srcItemIdTo
+- **srcItemIdFrom**: first id number
+- **srcItemIdTo**: last id number
 
 ## Recover file (JSON)
 
