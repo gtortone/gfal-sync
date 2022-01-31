@@ -15,6 +15,7 @@ def monitor_callback(src, dst, average, instant, transferred, elapsed):
 parser = argparse.ArgumentParser(description="=== gfal-sync ===")
 parser.add_argument('-c', '--conf', dest='conffile', type=str, action='store', help='JSON config file')
 parser.add_argument('-r', '--recover', dest='recoverfile', type=str, action='store', help='JSON recover file')
+parser.add_argument('-y', '--yes', action='store_true', help='confirm recovery file usage')
 parser.add_argument('-s', '--summary', action='store_true', help='print transfers summary')
 
 args = parser.parse_args()
@@ -160,14 +161,18 @@ try:
             fmode = 'w'
             statusFile = f'{ldir}.recover'
             if os.path.exists(statusFile):      # recover file exists
-                while True:
-                    res = input(f'=> recover file {statusFile} found - do you want to use it to recover transfers (Y) or init (N) ')
-                    if res.lower() == 'y':
-                        fmode = 'r+'
-                        break
-                    elif res.lower() == 'n':
-                        fmode = 'w'
-                        break
+                if args.yes is False:
+                    while True:
+                        res = input(f'=> recover file {statusFile} found - do you want to use it to recover transfers (Y) or init (N) ')
+                        if res.lower() == 'y':
+                            fmode = 'r+'
+                            break
+                        elif res.lower() == 'n':
+                            fmode = 'w'
+                            break
+                else:
+                    fmode = 'r+'
+
             try:
                 fhand = open(statusFile, fmode)
             except Exception as e:
